@@ -16,6 +16,7 @@
         <module>Java8Collections</module>
         <module>RomanToArabian</module>
         <module>BitCalculator</module>
+        <module>PhoneBillCalculator</module>
     </modules>
 
     <properties>
