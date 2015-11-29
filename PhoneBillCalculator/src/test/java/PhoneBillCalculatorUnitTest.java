@@ -79,12 +79,25 @@ public class PhoneBillCalculatorUnitTest {
     }
 
     @Test
-    public void shouldReturnExpectedSeconds() throws ParseException {
+    public void shouldReturnExpectedPrice() throws ParseException {
 
         final int solution = sut.getSolution("00:01:07,400-234-090\n" +
                 "   00:05:01,701-080-080\n" +
                 "   00:05:00,400-234-090");
 
         assertThat(solution).isEqualTo(900);
+    }
+
+    @Test
+    public void shouldReturnExpectedPriceWithDuplicates() throws ParseException {
+
+        final int solution = sut.getSolution(
+                "00:01:07,400-234-090\n" +
+                "00:01:07,400-234-090\n" +
+                "00:01:07,400-234-090\n" +
+                "   00:05:00,701-080-080\n" +
+                "   00:05:00,400-234-090");
+
+        assertThat(solution).isEqualTo(750);
     }
 }
