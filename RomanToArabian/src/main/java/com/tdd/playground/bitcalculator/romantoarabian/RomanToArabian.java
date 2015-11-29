@@ -1,4 +1,4 @@
-package com.tdd.playground.romantoarabian;
+package com.tdd.playground.bitcalculator.romantoarabian;
 
 /**
  * Created by Carlos.Cornejo on 05/07/2015.
