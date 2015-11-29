@@ -12,6 +12,7 @@
     <modules>
         <module>ArabicToRoman</module>
         <module>FileNIO</module>
+        <module>FizzBuzzWoof</module>
     </modules>
 
     <properties>
