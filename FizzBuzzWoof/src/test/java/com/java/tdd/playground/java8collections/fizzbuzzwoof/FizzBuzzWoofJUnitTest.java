@@ -1,4 +1,4 @@
-package com.java.tdd.playground.fizzbuzzwoof;
+package com.tdd.playground.java8collections.fizzbuzzwoof;
 
 import org.junit.Before;
 import org.junit.Test;

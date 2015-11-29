@@ -7,9 +7,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>arabictoroman</artifactId>
+    <artifactId>Java8Collections</artifactId>
     <packaging>jar</packaging>
 
-    <name>arabictoroman</name>
-
+    <name>Java8Collections</name>
 </project>
