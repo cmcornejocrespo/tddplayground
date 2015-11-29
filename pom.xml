@@ -11,6 +11,7 @@
 
     <modules>
         <module>ArabicToRoman</module>
+        <module>FileNIO</module>
     </modules>
 
     <properties>
