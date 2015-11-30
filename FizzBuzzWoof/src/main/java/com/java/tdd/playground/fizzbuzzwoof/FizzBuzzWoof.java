@@ -7,6 +7,17 @@ import static java.lang.String.valueOf;
  */
 public class FizzBuzzWoof {
 
+    private static final String
+            FIZZ_BUZZ_WOOF = "FizzBuzzWoof",
+            FIZZ_BUZZ = "FizzBuzz",
+            FIZZ_WOOF = "FizzWoof",
+            BUZZ_WOOF = "BuzzWoof",
+            FIZZ = "Fizz",
+            BUZZ = "Buzz",
+            WOOF = "Woof";
+
+    private static final String COMMA = ",";
+
     public String getResult(int input) {
 
         StringBuilder builder = new StringBuilder();
@@ -14,24 +25,24 @@ public class FizzBuzzWoof {
         for (int i = 1; i <= input; i++) {
 
             if (isDivisibleBy3(i) && isDivisibleBy5(i) && isDivisibleBy7(i)) {
-                builder.append("FizzBuzzWoof");
+                builder.append(FIZZ_BUZZ_WOOF);
             } else if (isDivisibleBy3(i) && isDivisibleBy5(i)) {
-                builder.append("FizzBuzz");
+                builder.append(FIZZ_BUZZ);
             } else if (isDivisibleBy3(i) && isDivisibleBy7(i)) {
-                builder.append("FizzWoof");
+                builder.append(FIZZ_WOOF);
             } else if (isDivisibleBy5(i) && isDivisibleBy7(i)) {
-                builder.append("BuzzWoof");
+                builder.append(BUZZ_WOOF);
             } else if (isDivisibleBy3(i)) {
-                builder.append("Fizz");
+                builder.append(FIZZ);
             } else if (isDivisibleBy5(i)) {
-                builder.append("Buzz");
+                builder.append(BUZZ);
             } else if (isDivisibleBy7(i)) {
-                builder.append("Woof");
+                builder.append(WOOF);
             } else {
                 builder.append(valueOf(i));
             }
             if (i < input) {
-                builder.append(",");
+                builder.append(COMMA);
             }
         }
 
