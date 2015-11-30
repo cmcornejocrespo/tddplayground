@@ -1,4 +1,4 @@
-package com.tdd.playground.java8collections.fizzbuzzwoof;
+package com.java.tdd.playground.fizzbuzzwoof;
 
 import static java.lang.String.valueOf;
 

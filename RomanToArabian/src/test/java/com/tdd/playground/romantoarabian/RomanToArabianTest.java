@@ -1,4 +1,4 @@
-package com.tdd.playground.bitcalculator.romantoarabian;
+package com.tdd.playground.romantoarabian;
 
 import org.junit.Before;
 import org.junit.Test;

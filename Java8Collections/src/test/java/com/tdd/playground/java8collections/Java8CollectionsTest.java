@@ -1,4 +1,4 @@
-package com.tdd.playground.bitcalculator.java8collections;
+package com.tdd.playground.java8collections;
 
 import org.junit.Test;
 

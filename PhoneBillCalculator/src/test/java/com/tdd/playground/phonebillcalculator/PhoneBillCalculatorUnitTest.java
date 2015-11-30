@@ -1,3 +1,5 @@
+package com.tdd.playground.phonebillcalculator;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -93,10 +95,10 @@ public class PhoneBillCalculatorUnitTest {
 
         final int solution = sut.getSolution(
                 "00:01:07,400-234-090\n" +
-                "00:01:07,400-234-090\n" +
-                "00:01:07,400-234-090\n" +
-                "   00:05:00,701-080-080\n" +
-                "   00:05:00,400-234-090");
+                        "00:01:07,400-234-090\n" +
+                        "00:01:07,400-234-090\n" +
+                        "   00:05:00,701-080-080\n" +
+                        "   00:05:00,400-234-090");
 
         assertThat(solution).isEqualTo(750);
     }
