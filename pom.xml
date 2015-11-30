@@ -17,6 +17,7 @@
         <module>RomanToArabian</module>
         <module>BitCalculator</module>
         <module>PhoneBillCalculator</module>
+        <module>CustomList</module>
     </modules>
 
     <properties>
