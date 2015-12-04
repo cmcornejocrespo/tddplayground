@@ -4,16 +4,30 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Long.MAX_VALUE;
+import static java.util.Calendar.HOUR;
+import static java.util.Calendar.MINUTE;
+import static java.util.Calendar.SECOND;
+
 public class PhoneBillCalculator {
 
-    private final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+    private static final String
+            DATE_FORMAT = "HH:mm:ss",
+            COMMA = ",",
+            NEW_LINE_TAB_REGEX = "\\r?\\n",
+            DASH = "-",
+            EMPTY = "";
 
-    public int getSolution(String billInput) throws ParseException {
+    private final static SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+    private final static Calendar calendarInstance = GregorianCalendar.getInstance();
+
+    public int solution(String billInput) {
 
         final Map<String, Integer> phoneNumberListWithTotalAmountOfSeconds = getTotalSecondsPerPhoneNumber(billInput);
 
@@ -29,7 +43,7 @@ public class PhoneBillCalculator {
         return totalPrice;
     }
 
-    private int getTotalPrice(String billInput, String maximumPhoneNumberWithLowerValue) throws ParseException {
+    private int getTotalPrice(final String billInput, final String maximumPhoneNumberWithLowerValue) {
 
         int totalPrice = 0;
 
@@ -41,19 +55,20 @@ public class PhoneBillCalculator {
 
             final String duration = line[0];
             final String telephoneNumber = line[1];
+
             if (!telephoneNumber.equals(maximumPhoneNumberWithLowerValue)) {
-                totalPrice = +calculatePrice(duration);
+                totalPrice += calculatePrice(duration);
             }
 
         }
         return totalPrice;
     }
 
-    private String getTheSmallestPhoneInCaseOfTie(List<String> listOfPhoneMostCalled) {
+    private String getTheSmallestPhoneInCaseOfTie(final List<String> listOfPhoneMostCalled) {
 
         //we resolve the tie within the smallest telephone number
         String maximumPhoneNumberWithLowerValue = null;
-        long minimumPhoneNumber = Long.MAX_VALUE;
+        long minimumPhoneNumber = MAX_VALUE;
 
         for (String phoneNumber : listOfPhoneMostCalled) {
 
@@ -68,11 +83,11 @@ public class PhoneBillCalculator {
         return maximumPhoneNumberWithLowerValue;
     }
 
-    private List<String> getMostCalledPhoneNumbers(Map<String, Integer> phoneNumberListWithTotalAmountOfSeconds,
+    private List<String> getMostCalledPhoneNumbers(final Map<String, Integer> phoneNumberListWithTotalAmountOfSeconds,
                                                    int maxSecondsInACall) {
 
         //retrieve the phone number/s with the maximum amount of seconds in calls
-        List<String> listOfPhoneMostCalled = new ArrayList<>();
+        final List<String> listOfPhoneMostCalled = new ArrayList<>();
 
         for (String phoneNumber : phoneNumberListWithTotalAmountOfSeconds.keySet()) {
 
@@ -83,7 +98,8 @@ public class PhoneBillCalculator {
         return listOfPhoneMostCalled;
     }
 
-    private int getLongestCallInSeconds(Map<String, Integer> phoneNumberListWithTotalAmountOfSeconds) {
+    private int getLongestCallInSeconds(final Map<String, Integer> phoneNumberListWithTotalAmountOfSeconds) {
+
         int maxSecondsInACall = 0;
 
         //we obtain the maximum number of seconds of any call
@@ -96,8 +112,9 @@ public class PhoneBillCalculator {
         return maxSecondsInACall;
     }
 
-    private Map<String, Integer> getTotalSecondsPerPhoneNumber(String billInput) throws ParseException {
-        Map<String, Integer> numbers = new HashMap<>();
+    private Map<String, Integer> getTotalSecondsPerPhoneNumber(final String billInput) {
+
+        final Map<String, Integer> phoneEntries = new HashMap<>();
 
         final String[] billLines = splitInLines(billInput);
 
@@ -106,66 +123,79 @@ public class PhoneBillCalculator {
             final String[] line = splitLineIntoTimeAndNumber(billLines[i]);
 
             final String duration = line[0];
-            final String telephoneNumber = line[1];
+            final String phoneNumber = line[1];
 
-            final int secondsPerCall = getTotalSeconds(duration);
+            final int secondsPerCall = calculateNumOfSecondsInACall(duration);
 
-            if (numbers.get(telephoneNumber) == null) {
+            if (phoneEntries.get(phoneNumber) == null) {
 
-                numbers.put(telephoneNumber, secondsPerCall);
+                phoneEntries.put(phoneNumber, secondsPerCall);
             } else {
 
-                final Integer existingNumberOfSecondsPerCall = numbers.get(telephoneNumber);
+                final Integer totalSecondsPerCall = phoneEntries.get(phoneNumber);
 
-                numbers.put(telephoneNumber, (secondsPerCall + existingNumberOfSecondsPerCall));
+                phoneEntries.put(phoneNumber, (secondsPerCall + totalSecondsPerCall));
             }
         }
-        return numbers;
+        return phoneEntries;
     }
 
-    public int getTotalSeconds(String duration) throws ParseException {
+    public int calculateNumOfSecondsInACall(final String duration) {
 
-        Calendar calendar = GregorianCalendar.getInstance();
-        calendar.setTime(sdf.parse(duration));
+        try {
 
-        int hour = calendar.get(Calendar.HOUR);
-        int minute = calendar.get(Calendar.MINUTE);
-        int seconds = calendar.get(Calendar.SECOND);
+            final Date dateParser = sdf.parse(duration);
+            calendarInstance.setTime(dateParser);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        final int hour = calendarInstance.get(HOUR);
+        final int minute = calendarInstance.get(MINUTE);
+        final int seconds = calendarInstance.get(SECOND);
 
         return hour * 60 * 60 + minute * 60 + seconds;
     }
 
-    public String[] splitLineIntoTimeAndNumber(String s) {
-        return s.split(",");
+    public String[] splitLineIntoTimeAndNumber(final String billLinePair) {
+
+        return billLinePair.split(COMMA);
     }
 
-    public String[] splitInLines(String s) {
-        return s.split("\\r?\\n");
+    public String[] splitInLines(final String billLine) {
+
+        return billLine.split(NEW_LINE_TAB_REGEX);
     }
 
-    public int calculatePrice(String s) throws ParseException {
+    public int calculatePrice(final String phoneCallDuration) {
 
-        final int totalSeconds = getTotalSeconds(s);
+        final int totalPhoneCallSeconds = calculateNumOfSecondsInACall(phoneCallDuration);
 
         int total;
-        if (totalSeconds < 300) {
-            total = totalSeconds * 3;
+        if (totalPhoneCallSeconds < 300) {
+            total = totalPhoneCallSeconds * 3;
         } else {
 
-            final int exactMinutes = totalSeconds / 60;
+            final int secondsInAMinute = 60;
+            final int priceOfASecond = 150;
 
-            if (totalSeconds % 60 == 0) {
+            final int exactMinutes = totalPhoneCallSeconds / secondsInAMinute;
 
-                total = exactMinutes * 150;
+            if (totalPhoneCallSeconds % secondsInAMinute == 0) {
+
+                total = exactMinutes * priceOfASecond;
             } else {
-                total = (exactMinutes + 1) * 150;
+                total = (exactMinutes + 1) * priceOfASecond;
             }
         }
         return total;
     }
 
-    public long convertPhoneToNumber(String phoneNumber) {
+    public long convertPhoneToNumber(final String phoneNumber) {
 
-        return new Long(phoneNumber.replaceAll("-", ""));
+        final String parsedPhoneNumber = phoneNumber.replaceAll(DASH, EMPTY);
+
+        return new Long(parsedPhoneNumber);
     }
 }

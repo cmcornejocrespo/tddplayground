@@ -43,7 +43,7 @@ public class PhoneBillCalculatorUnitTest {
     @Test
     public void shouldParseDateAndNumber() throws ParseException {
 
-        int result = sut.getTotalSeconds("00:01:07");
+        int result = sut.calculateNumOfSecondsInACall("00:01:07");
 
         assertThat(result).isEqualTo(67);
     }
@@ -83,7 +83,7 @@ public class PhoneBillCalculatorUnitTest {
     @Test
     public void shouldReturnExpectedPrice() throws ParseException {
 
-        final int solution = sut.getSolution("00:01:07,400-234-090\n" +
+        final int solution = sut.solution("00:01:07,400-234-090\n" +
                 "   00:05:01,701-080-080\n" +
                 "   00:05:00,400-234-090");
 
@@ -93,13 +93,39 @@ public class PhoneBillCalculatorUnitTest {
     @Test
     public void shouldReturnExpectedPriceWithDuplicates() throws ParseException {
 
-        final int solution = sut.getSolution(
+        final int solution = sut.solution(
                 "00:01:07,400-234-090\n" +
                         "00:01:07,400-234-090\n" +
                         "00:01:07,400-234-090\n" +
-                        "   00:05:00,701-080-080\n" +
-                        "   00:05:00,400-234-090");
+                        "00:05:00,701-080-080\n" +
+                        "00:05:00,400-234-090");
 
         assertThat(solution).isEqualTo(750);
+    }
+
+    @Test
+    public void shouldReturnExpectedPriceWithDifferentNumberLessThan3Minutes() throws ParseException {
+
+        final int solution = sut.solution(
+                "00:01:07,400-234-090\n" +
+                "00:02:07,401-234-090\n" +
+                "00:01:59,402-234-090\n" +
+                "00:02:00,701-080-080\n" +
+                "00:02:00,407-234-090");
+
+        assertThat(solution).isEqualTo(1278);
+    }
+
+    @Test
+    public void shouldReturnExpectedPriceWithDuplicateNumbersLessThan3Minutes() throws ParseException {
+
+        final int solution = sut.solution(
+                "00:01:07,400-234-090\n" +
+                "00:02:07,400-234-090\n" +
+                "00:01:59,400-234-090\n" +
+                "00:02:00,701-080-080\n" +
+                "00:02:00,407-234-090");
+
+        assertThat(solution).isEqualTo(720);
     }
 }
