@@ -9,7 +9,7 @@ the duration of the call (in "hh" hours, "mm" minutes and "ss" seconds) aand "nn
 number of the recipient (with no leading zeros).
 
 Each call is billed separately. The billing rules are as follows: 
-* If the call was shortear than 5 minutes, then you pay 3 cents for every started second of 
+* If the call was shorter than 5 minutes, then you pay 3 cents for every started second of 
 the call (e.g fort duration "00:01:07" you pay 67*3 = 201 cents).
 * If the call was at least 5 minutes long, then you pay 150 cents for every started minute of 
 the call (e.g. for duration "00:05:00" you pay 5 * 150 = 7S0 cents and for duration '00:05:01' you pay 6 * 150 = 900 cents).
