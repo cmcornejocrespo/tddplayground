@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import static java.lang.Long.MAX_VALUE;
+import static java.lang.Long.parseLong;
 import static java.util.Calendar.HOUR;
 import static java.util.Calendar.MINUTE;
 import static java.util.Calendar.SECOND;
@@ -24,8 +25,8 @@ public class PhoneBillCalculator {
             DASH = "-",
             EMPTY = "";
 
-    private final static SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-    private final static Calendar calendarInstance = GregorianCalendar.getInstance();
+    private final SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+    private final Calendar calendarInstance = GregorianCalendar.getInstance();
 
     public int solution(String billInput) {
 
@@ -89,11 +90,12 @@ public class PhoneBillCalculator {
         //retrieve the phone number/s with the maximum amount of seconds in calls
         final List<String> listOfPhoneMostCalled = new ArrayList<>();
 
-        for (String phoneNumber : phoneNumberListWithTotalAmountOfSeconds.keySet()) {
+        for (Map.Entry<String, Integer> entry : phoneNumberListWithTotalAmountOfSeconds.entrySet()) {
 
-            final Integer secondsPerCall = phoneNumberListWithTotalAmountOfSeconds.get(phoneNumber);
+            final Integer secondsPerCall = entry.getValue();
+
             if (secondsPerCall == maxSecondsInACall)
-                listOfPhoneMostCalled.add(phoneNumber);
+                listOfPhoneMostCalled.add(entry.getKey());
         }
         return listOfPhoneMostCalled;
     }
@@ -103,9 +105,10 @@ public class PhoneBillCalculator {
         int maxSecondsInACall = 0;
 
         //we obtain the maximum number of seconds of any call
-        for (String phoneNumber : phoneNumberListWithTotalAmountOfSeconds.keySet()) {
+        for (Map.Entry<String, Integer> entry : phoneNumberListWithTotalAmountOfSeconds.entrySet()) {
 
-            final Integer secondsPerCall = phoneNumberListWithTotalAmountOfSeconds.get(phoneNumber);
+            final Integer secondsPerCall = entry.getValue();
+
             if (secondsPerCall > maxSecondsInACall)
                 maxSecondsInACall = secondsPerCall;
         }
@@ -192,10 +195,10 @@ public class PhoneBillCalculator {
         return total;
     }
 
-    public long convertPhoneToNumber(final String phoneNumber) {
+    public Long convertPhoneToNumber(final String phoneNumber) {
 
         final String parsedPhoneNumber = phoneNumber.replaceAll(DASH, EMPTY);
 
-        return new Long(parsedPhoneNumber);
+        return parseLong(parsedPhoneNumber);
     }
 }
