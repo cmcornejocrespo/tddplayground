@@ -4,7 +4,6 @@ import com.java.tdd.playground.filenio.strategy.FileReadingStrategy;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -18,19 +17,19 @@ import static java.nio.file.Paths.get;
 public class RecursiveNumberOfLinesCodeCommentsReading implements FileReadingStrategy {
 
     @Override
-    public void getResult(String path) throws IOException {
+    public void getResult(String path) {
 
         final Path resolvedPath = get(path);
 
-        if (!Files.exists(resolvedPath)) {
-            throw new IOException("Path not exists:" + resolvedPath);
-        }
+//        if (!Files.exists(resolvedPath)) {
+//            throw new IOException("Path not exists:" + resolvedPath);
+//        }
 
         getFilesRecursive(resolvedPath);
 
     }
 
-    private void getFilesRecursive(Path resolvedPath) throws IOException {
+    private void getFilesRecursive(Path resolvedPath) {
 
         if (isRegularFile(resolvedPath)) {
 
@@ -50,21 +49,25 @@ public class RecursiveNumberOfLinesCodeCommentsReading implements FileReadingStr
 
     }
 
-    private void doCommentsAndCodeParsingPrinting(Path resolvedPath) throws IOException {
+    private void doCommentsAndCodeParsingPrinting(Path resolvedPath) {
 
         Path file;
         file = Paths.get(resolvedPath.toString());
 
         int lineNumber = 1;
-        for (String line : readAllLines(file)) {
-            if (line.startsWith("//") || line.startsWith("/*")) {
+        try {
+            for (String line : readAllLines(file)) {
+                if (line.startsWith("//") || line.startsWith("/*")) {
 
-                System.out.printf("File %s, line %d, contains comments\n", file.getFileName(), lineNumber);
-            } else {
+                    System.out.printf("File %s, line %d, contains comments\n", file.getFileName(), lineNumber);
+                } else {
 
-                System.out.printf("File %s, line %d, contains code\n", file.getFileName(), lineNumber);
+                    System.out.printf("File %s, line %d, contains code\n", file.getFileName(), lineNumber);
+                }
+                lineNumber++;
             }
-            lineNumber++;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

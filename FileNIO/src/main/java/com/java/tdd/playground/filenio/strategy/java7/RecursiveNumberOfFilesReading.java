@@ -3,11 +3,10 @@ package com.java.tdd.playground.filenio.strategy.java7;
 import com.java.tdd.playground.filenio.strategy.FileReadingStrategy;
 
 import java.io.File;
-import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static java.nio.file.Files.exists;
 import static java.nio.file.Files.isRegularFile;
 import static java.nio.file.Paths.get;
 
@@ -17,13 +16,18 @@ import static java.nio.file.Paths.get;
 public class RecursiveNumberOfFilesReading implements FileReadingStrategy {
 
     @Override
-    public void getResult(String path) throws IOException {
+    public void getResult(String path){
 
-        final Path resolvedPath = Paths.get(path);
-
-        if (!exists(resolvedPath)) {
-            throw new IOException("Path not exists:" + resolvedPath);
+        Path resolvedPath = null;
+        try {
+            resolvedPath = Paths.get(getClass().getResource("/"+path).toURI());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
         }
+
+//        if (!exists(resolvedPath)) {
+//            throw new IOException("Path not exists:" + resolvedPath);
+//        }
 
         int total = getFilesRecursive(resolvedPath);
 

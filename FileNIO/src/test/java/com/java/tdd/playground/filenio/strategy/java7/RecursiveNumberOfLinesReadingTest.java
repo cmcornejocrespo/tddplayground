@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.URISyntaxException;
 
 import static java.lang.System.setOut;
 import static org.assertj.core.api.StrictAssertions.assertThat;
@@ -29,7 +30,7 @@ public class RecursiveNumberOfLinesReadingTest {
     }
 
     @Test
-    public void shouldReturnExpectedOutcomeWhenRecursiveReadingStrategyUsed() throws IOException {
+    public void shouldReturnExpectedOutcomeWhenRecursiveReadingStrategyUsed() throws IOException, URISyntaxException {
 
         sut.getSolution("C:\\temp\\carlos");
 
@@ -38,7 +39,7 @@ public class RecursiveNumberOfLinesReadingTest {
     }
 
     @Test(expected = IOException.class)
-    public void shouldReturnIOExceptionWhenNonExistingPath() throws IOException {
+    public void shouldReturnIOExceptionWhenNonExistingPath() throws IOException, URISyntaxException {
 
         sut.getSolution("I Don't exist");
 

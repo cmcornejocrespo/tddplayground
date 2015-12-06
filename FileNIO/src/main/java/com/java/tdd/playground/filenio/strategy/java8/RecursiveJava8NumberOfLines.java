@@ -16,19 +16,24 @@ import static java.nio.file.Paths.get;
 public class RecursiveJava8NumberOfLines implements FileReadingStrategy {
 
     @Override
-    public void getResult(String path) throws IOException {
+    public void getResult(String absolutePath) {
 
 
-        walk(get(path))
-                .filter(file -> isRegularFile(file))
-                .forEach(path1 -> {
-                    try {
-                        final long count = lines(path1).count();
-                        out.printf("Total number of lines: %d of file: %s\n",
-                                count, path1.getFileName().toString());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
+        try {
+            walk(get(absolutePath))
+                    .filter(file -> isRegularFile(file))
+                    .forEach(filePath -> {
+                        try {
+
+                            final long count = lines(filePath).count();
+
+                            out.printf("Total number of lines: %d of file: %s\n", count, filePath.getFileName().toString());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

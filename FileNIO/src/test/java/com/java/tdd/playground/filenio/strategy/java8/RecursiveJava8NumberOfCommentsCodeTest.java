@@ -30,7 +30,7 @@ public class RecursiveJava8NumberOfCommentsCodeTest {
     @Test
     public void shouldReturnExpectedNumberOfCommentsAndCode() throws IOException {
 
-        sut.getResult("C:\\temp\\carlos2");
+        sut.getResult("file");
 
         assertThat(output.toString()).isEqualTo("File C:\\temp\\carlos2\\New Text Document.txt, line 1, contains comments\n" +
                 "File C:\\temp\\carlos2\\New Text Document.txt, line 1, contains comments\n" +
