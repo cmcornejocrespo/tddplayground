@@ -18,6 +18,7 @@
         <module>BitCalculator</module>
         <module>PhoneBillCalculator</module>
         <module>CustomList</module>
+        <module>GoalDifferenceCalculator</module>
     </modules>
 
     <properties>
