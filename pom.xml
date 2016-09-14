@@ -19,6 +19,7 @@
         <module>PhoneBillCalculator</module>
         <module>CustomList</module>
         <module>GoalDifferenceCalculator</module>
+        <module>BlackJack</module>
     </modules>
 
     <properties>
